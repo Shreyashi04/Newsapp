@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+
+            document.querySelectorAll("select, input").forEach((el) => {
+                el.addEventListener("change", () => {
+                    form.submit();
+                });
+            });
+        });
+    </script>
+    <header>
+        <nav> 
+            <form action="/" method="post"> 
+                <label for="category">Categories</label>
+                <select name="category" id="category">
+                    <option value="" disabled selected>------------------</option>
+                    <option value="Politics">Politics</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Education">Education</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Business">Business</option>
+                </select>
+
+                <label for="search">Search</label>
+                <input type="text" placeholder="Search..." id="search" name='search'>
+
+                <label for="country">Country</label>
+                <select name="country" id="country">
+                    <option value="" disabled selected>------------------</option>
+                    {% for country in countries %}
+                        <option value="{{ country }}">{{ country }}</option>
+                    {% endfor %}
+                </select>     
+            </form>
+        </nav>
+    </header>
+    <main>
+        <h1>News Articles</h1>
+        {% if articles %}
+            <div class="article">
+                <h2>{{ first_article.title }}</h2>
+                <p>{{ first_article.description }}</p>
+                <a href="{{ first_article.url }}" target="_blank">Read more</a>
+            </div>
+            <div class="articles-list">
+                {% for article in articles %}
+                    <div class="article">
+                        <h3>{{ article.title }}</h3>
+                        <p>{{ article.description }}</p>
+                        <a href="{{ article.url }}" target="_blank">Read more</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No articles found.</p>
+        {% endif %}
+
+    </main>
+</body>
+</html>
